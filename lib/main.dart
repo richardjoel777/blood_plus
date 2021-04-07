@@ -14,22 +14,21 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.red,
           accentColor: Colors.yellowAccent,
-          backgroundColor: Color.fromRGBO(255, 2254, 229, 1),
           canvasColor: Color.fromRGBO(255, 2254, 229, 1),
-          // fontFamily: 'Sans',
-          // textTheme: ThemeData.light().textTheme.copyWith(
-          //     bodyText2: TextStyle(
-          //       color: Color.fromRGBO(20, 51, 51, 1),
-          //     ),
-          //     bodyText1: TextStyle(
-          //       color: Color.fromRGBO(20, 51, 51, 1),
-          //     ),
-          //     headline6: TextStyle(
-          //       fontSize: 20,
-          //       fontFamily: 'Sans',
-          //       fontWeight: FontWeight.bold,
-          //     ))),
-      ),
+          fontFamily: 'Raleway',
+          textTheme: ThemeData.light().textTheme.copyWith(
+              bodyText2: TextStyle(
+                color: Color.fromRGBO(20, 51, 51, 1),
+              ),
+              bodyText1: TextStyle(
+                color: Color.fromRGBO(20, 51, 51, 1),
+              ),
+              headline6: TextStyle(
+                color: Color.fromRGBO(255,255,255, 1),
+                fontSize: 20,
+                fontFamily: 'RobotoCondensed',
+                fontWeight: FontWeight.bold,
+              ))),
       initialRoute: '/',
       routes: {
         '/': (ctx) => TabsScreen(),
