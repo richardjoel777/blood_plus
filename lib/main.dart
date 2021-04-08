@@ -1,3 +1,5 @@
+import './screens/bloodItemScreen.dart';
+
 import './screens/tabsScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -28,10 +30,18 @@ class MyApp extends StatelessWidget {
                 fontSize: 20,
                 fontFamily: 'RobotoCondensed',
                 fontWeight: FontWeight.bold,
-              ))),
+              ),
+              headline1: TextStyle(
+                color: Colors.grey,
+                fontSize: 12,
+                fontFamily: 'RobotoCondensed',
+                fontWeight: FontWeight.bold,
+              )
+              )),
       initialRoute: '/',
       routes: {
         '/': (ctx) => TabsScreen(),
+        BloodItemScreen.routeName: (ctx) => BloodItemScreen(),
       },
     );
   }
