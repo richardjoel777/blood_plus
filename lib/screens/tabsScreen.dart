@@ -1,6 +1,8 @@
-import 'package:blood_plus/screens/donateScreen.dart';
-import 'package:blood_plus/screens/requestScreen.dart';
 import 'package:flutter/material.dart';
+
+import '../screens/donateScreen.dart';
+import '../screens/requestScreen.dart';
+import '../widgets/main_drawer.dart';
 import './homeScreen.dart';
 
 class TabsScreen extends StatefulWidget {
@@ -42,6 +44,7 @@ class _TabsScreenState extends State<TabsScreen> {
         title: Text(_pages[_selectedPageIndex]['title'], style: Theme.of(context).textTheme.headline6,),
       ),
       body: _pages[_selectedPageIndex]['page'],
+      drawer: MainDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Theme.of(context).accentColor,
         unselectedItemColor: Colors.white,

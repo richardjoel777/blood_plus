@@ -1,7 +1,11 @@
-import './screens/bloodItemScreen.dart';
-
-import './screens/tabsScreen.dart';
+import 'package:blood_plus/screens/loginScreen.dart';
+import 'package:blood_plus/screens/registerScreen.dart';
 import 'package:flutter/material.dart';
+
+import './screens/profileScreen.dart';
+import './screens/bloodItemScreen.dart';
+import './screens/tabsScreen.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -14,6 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+         backgroundColor: Colors.white,
           primarySwatch: Colors.red,
           accentColor: Colors.yellowAccent,
           canvasColor: Color.fromRGBO(255, 2254, 229, 1),
@@ -41,7 +46,10 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (ctx) => TabsScreen(),
+        ProfileScreen.routeName: (ctx) => ProfileScreen(),
+        RegisterScreen.routeName: (ctx) => RegisterScreen(),
         BloodItemScreen.routeName: (ctx) => BloodItemScreen(),
+        LoginScreen.routeName: (ctx) => LoginScreen(),
       },
     );
   }

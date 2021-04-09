@@ -1,3 +1,4 @@
+import 'package:blood_plus/models/request.dart';
 import 'package:flutter/material.dart';
 
 import './models/blood_eligibility.dart';
@@ -85,4 +86,67 @@ const DUMMY_BLOOD = [
       ],
       donate: ["AB-", "AB+"],
       color: Colors.orange),                               
+];
+
+
+const BLOOD_REQUESTS = [
+  Request(
+    id: 'r1',
+    name: 'Richard',
+    area: 'Trichy',
+    bloodGroup: "A+",
+    date: "12-04-2021",
+  ),
+   Request(
+    id: 'r2',
+    name: 'Robin',
+    bloodGroup: "B+",
+    area: 'Thirunelveli',
+    date: "15-04-2021",
+  ),
+   Request(
+    id: 'r3',
+    name: 'Raveen',
+    bloodGroup: "AB+",
+    area: 'Tuticorin',
+    date: "08-04-2021",
+  ),
+   Request(
+    id: 'r4',
+    name: 'Ravichandran',
+    bloodGroup: "B+",
+    area: 'Erode',
+    date: "10-04-2021",
+  ),
+   Request(
+    id: 'r5',
+    name: 'Pravin',
+    bloodGroup: "O+",
+    area: 'Salem',
+    date: "07-04-2021",
+  ),
+   Request(
+    id: 'r6',
+    name: 'Premnath',
+    bloodGroup: "A+",
+    area: 'Coimbatore',
+    date: "11-04-2021",
+  ),
+];
+
+const DONATION_HISTORY = [
+ Request(
+    id: 'r3',
+    name: 'Raveen',
+    bloodGroup: "AB+",
+    area: 'Tuticorin',
+    date: "08-04-2020",
+  ),
+   Request(
+    id: 'r4',
+    name: 'Ravichandran',
+    bloodGroup: "B+",
+    area: 'Erode',
+    date: "12-12-2020",
+  ),
 ];
