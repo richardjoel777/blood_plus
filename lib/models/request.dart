@@ -1,9 +1,12 @@
-class Request {
+import 'package:flutter/cupertino.dart';
+
+class Request with ChangeNotifier {
   final String id;
   final String name;
+  final int age;
   final String bloodGroup;
   final String date;
   final String area;
 
-  const Request({this.id, this.name, this.date, this.area, this.bloodGroup});
+  Request({this.id, this.name, this.date, this.area, this.bloodGroup, this.age});
 }

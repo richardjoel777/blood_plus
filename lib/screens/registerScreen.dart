@@ -174,7 +174,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           DropdownButton<String>(
                             value: bloodgroup != null ? bloodgroup : null,
-                            items: <String>['A', 'B', 'C', 'D'].map((String v) {
+                            items: <String>['A+', 'B+', 'AB', 'O+', 'A-', 'B-', 'AB-', 'O-'].map((String v) {
                               return new DropdownMenuItem<String>(
                                 value: v,
                                 child: Text(v),

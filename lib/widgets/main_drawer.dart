@@ -1,3 +1,4 @@
+import 'package:blood_plus/screens/donation_history_screen.dart';
 import 'package:flutter/material.dart';
 import '../screens/profileScreen.dart';
 
@@ -47,6 +48,13 @@ class MainDrawer extends StatelessWidget {
             Icons.person,
             () {
               Navigator.of(context).pushNamed(ProfileScreen.routeName);
+            },
+          ),
+          buildListTile(
+            'Donation History',
+            Icons.history,
+            () {
+              Navigator.of(context).pushNamed(DonationHistoryScreen.routeName);
             },
           ),
           buildListTile('Logout', Icons.logout, (){

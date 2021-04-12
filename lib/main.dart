@@ -1,11 +1,14 @@
+import 'package:blood_plus/providers/bloods.dart';
+import 'package:blood_plus/providers/donations.dart';
 import 'package:blood_plus/screens/loginScreen.dart';
 import 'package:blood_plus/screens/registerScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import './screens/profileScreen.dart';
 import './screens/bloodItemScreen.dart';
 import './screens/tabsScreen.dart';
-
+import './screens/donation_history_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +18,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MultiProvider(providers: [
+      ChangeNotifierProvider(
+        create: (ctx) => Bloods(),
+      ),
+      ChangeNotifierProvider(
+        create: (ctx) => Donations(),
+        ),
+    ], 
+    child: MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
          backgroundColor: Colors.white,
@@ -46,11 +57,12 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (ctx) => TabsScreen(),
+        DonationHistoryScreen.routeName: (ctx) => DonationHistoryScreen(),
         ProfileScreen.routeName: (ctx) => ProfileScreen(),
         RegisterScreen.routeName: (ctx) => RegisterScreen(),
         BloodItemScreen.routeName: (ctx) => BloodItemScreen(),
         LoginScreen.routeName: (ctx) => LoginScreen(),
       },
-    );
+    ));
   }
 }
