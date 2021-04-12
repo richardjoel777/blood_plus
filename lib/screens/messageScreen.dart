@@ -1,31 +1,30 @@
-import 'package:blood_plus/screens/messageScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ChatScreen extends StatefulWidget {
-  static const routeName = "/ChatScreen";
+class MessageScreen extends StatefulWidget {
+  static const routeName = "/MessageScreen";
   @override
-  State<StatefulWidget> createState() => _ChatScreenState();
+  State<StatefulWidget> createState() => _MessageScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
-  var connections = [];
+class _MessageScreenState extends State<MessageScreen> {
+  var messages = [];
   void test() async {
-    var t_connections = [];
+    var t_messages = [];
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     var snapshot = await firestore
-        .collection("users")
-        .doc("userOneId")
-        .collection("connections")
+        .collection("chats")
+        .doc("2HT4jC0Q0UiMNADbErZB")
+        .collection("messages")
         .get();
     snapshot.docs.forEach((element) {
-      t_connections.add(element.data());
-      print(element.data()['name']);
+      t_messages.add(element.data());
+      print(element.data()['message']);
     });
     setState(() {
-      connections = t_connections;
-      print(connections[0]['name']);
+      messages = t_messages;
+      print(messages[0]['message']);
     });
   }
 
@@ -34,7 +33,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 255, 200, 33),
         appBar: AppBar(
-          title: Text("Chat"),
+          title: Text("Messages"),
         ),
         body: Column(
           children: [
@@ -42,20 +41,17 @@ class _ChatScreenState extends State<ChatScreen> {
               child: Text("Click me"),
               onPressed: () => this.test(),
             ),
-            connections.length > 0
+            messages.length > 0
                 ? Expanded(
                     child: ListView.builder(
                         padding: const EdgeInsets.all(8),
-                        itemCount: connections.length,
+                        itemCount: messages.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Container(
                               height: 40,
                               child: GestureDetector(
-                                child: Text(connections[index]['name']),
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, MessageScreen.routeName);
-                                },
+                                child: Text(messages[index]['message']),
+                                onTap: () {},
                               ));
                         }))
                 : Text("Nothing")

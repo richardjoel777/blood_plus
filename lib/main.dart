@@ -2,6 +2,7 @@ import 'package:blood_plus/providers/bloods.dart';
 import 'package:blood_plus/providers/donations.dart';
 import 'package:blood_plus/screens/chatScreen.dart';
 import 'package:blood_plus/screens/loginScreen.dart';
+import 'package:blood_plus/screens/messageScreen.dart';
 import 'package:blood_plus/screens/registerScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
             BloodItemScreen.routeName: (ctx) => BloodItemScreen(),
             LoginScreen.routeName: (ctx) => LoginScreen(),
             ChatScreen.routeName: (ctx) => ChatScreen(),
+            MessageScreen.routeName: (ctx) => MessageScreen(),
           },
         ));
   }
