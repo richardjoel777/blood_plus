@@ -28,6 +28,17 @@ class _MessageScreenState extends State<MessageScreen> {
     });
   }
 
+  void sendMessage() async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    await firestore
+        .collection("chats")
+        .doc("2HT4jC0Q0UiMNADbErZB")
+        .collection("messages")
+        .doc()
+        .set({'message': "a new message"});
+    test();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +65,25 @@ class _MessageScreenState extends State<MessageScreen> {
                                 onTap: () {},
                               ));
                         }))
-                : Text("Nothing")
+                : Text("Nothing"),
+            Expanded(
+              child: Align(
+                alignment: FractionalOffset.bottomCenter,
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: TextField(
+                    decoration: InputDecoration(
+                        hintText: "Type your message here",
+                        suffix: IconButton(
+                          onPressed: () {
+                            sendMessage();
+                          },
+                          icon: Icon(Icons.send),
+                        )),
+                  ),
+                ),
+              ),
+            ),
           ],
         ));
   }
