@@ -61,10 +61,14 @@ class AuthProvider with ChangeNotifier {
     return null;
   }
 
-  Future signUpEmail(String email, String password) async {
+  Future signUpEmail(String email, String password, String name) async {
     try {
-      UserCredential result = await firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      UserCredential result = await firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: password)
+          .then((value) async {
+        await value.user.updateProfile(displayName: name);
+        return value;
+      });
       print(result);
       User user = result.user;
       return _userFromFirebaseuser(user);

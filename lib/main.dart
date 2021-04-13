@@ -1,7 +1,7 @@
-
 import 'package:blood_plus/providers/auth.dart';
 import 'package:blood_plus/providers/bloods.dart';
 import 'package:blood_plus/providers/donations.dart';
+import 'package:blood_plus/providers/user.dart';
 import 'package:blood_plus/screens/chatScreen.dart';
 import 'package:blood_plus/screens/loginScreen.dart';
 import 'package:blood_plus/screens/messageScreen.dart';
@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
             create: (ctx) => Donations(),
           ),
           ChangeNotifierProvider(create: (ctx) => AuthProvider()),
+          ChangeNotifierProvider(create: (ctx) => CurrentUser()),
         ],
         child: MaterialApp(
           title: 'Flutter Demo',
@@ -62,7 +63,9 @@ class MyApp extends StatelessWidget {
                     fontFamily: 'RobotoCondensed',
                     fontWeight: FontWeight.bold,
                   ))),
-          initialRoute: FirebaseAuth.instance.currentUser==null ? LoginScreen.routeName : '/',
+          initialRoute: FirebaseAuth.instance.currentUser == null
+              ? LoginScreen.routeName
+              : '/',
           routes: {
             '/': (ctx) => TabsScreen(),
             DonationHistoryScreen.routeName: (ctx) => DonationHistoryScreen(),

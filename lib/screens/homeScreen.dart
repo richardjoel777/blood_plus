@@ -1,5 +1,5 @@
-
 import 'package:blood_plus/providers/bloods.dart';
+import 'package:blood_plus/providers/user.dart';
 import 'package:blood_plus/widgets/bloodItem.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +8,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloodData = Provider.of<Bloods>(context);
+    final currentUserData = Provider.of<CurrentUser>(context);
     return Padding(
       padding: EdgeInsets.only(right: 15, left: 15, top: 25, bottom: 10),
       child: Column(
@@ -40,7 +41,7 @@ class HomePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "RICHARD",
+                      currentUserData.userData['name'],
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
@@ -159,8 +160,8 @@ class HomePage extends StatelessWidget {
                   child: GridView(
                     padding: const EdgeInsets.all(25),
                     children: bloodData.bloods
-                        .map((blood) => BloodItem(
-                            blood.id, blood.blood, blood.color))
+                        .map((blood) =>
+                            BloodItem(blood.id, blood.blood, blood.color))
                         .toList(),
                     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                       maxCrossAxisExtent: 200,

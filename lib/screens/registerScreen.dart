@@ -358,7 +358,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           } else {
                             UserData result = await _auth.signUpEmail(
                                 emailTextEditingController.text,
-                                passwordTextEditingController.text);
+                                passwordTextEditingController.text,
+                                nameTextEditingController.text);
                             if (result == null) {
                               print("Something went wrong");
                             } else {
