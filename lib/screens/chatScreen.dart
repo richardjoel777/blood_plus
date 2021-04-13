@@ -39,7 +39,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Column(
       children: [
         ElevatedButton(
-          child: Text("Click me"),
+          child: Text("Refresh"),
           onPressed: () => this.test(),
         ),
         connections.length > 0

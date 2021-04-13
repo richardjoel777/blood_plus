@@ -304,7 +304,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                       } else if (_selectedRequiredDate == null) {
                         showErrorMessage("Required Date is mandatory");
                       } else {
-                      await  donationRequestsData.uploadRequest(
+                        await donationRequestsData.uploadRequest(
                             nameTextEditingController.text,
                             bloodgroup,
                             _selectedRequiredDate,
@@ -314,6 +314,8 @@ class _RequestsScreenState extends State<RequestsScreen> {
                             int.parse(unitsTextEditingController.text),
                             areaTextEditingController.text,
                             isCritical);
+                        Fluttertoast.showToast(
+                            msg: "Your Request is successfully placed");
                       }
                     },
                   )

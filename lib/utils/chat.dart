@@ -13,7 +13,7 @@ Future<void> initiateChat(String other_uid, String other_name) async {
     var snapshot = await _userRef.get();
     accepted = snapshot.data()['accepted'];
 
-    if (accepted.contains(other_uid)) {
+    if (accepted != null && accepted.contains(other_uid)) {
       Fluttertoast.showToast(msg: "You already accepted this request");
       return;
     }
@@ -32,6 +32,6 @@ Future<void> initiateChat(String other_uid, String other_name) async {
     });
     await batch.commit();
   } catch (e) {
-    print("Error happened initiating the chat");
+    print("Error happened initiating the chat" + e.toString());
   }
 }

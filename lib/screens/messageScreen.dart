@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +19,7 @@ class _MessageScreenState extends State<MessageScreen> {
         .collection("chats")
         .doc(key)
         .collection("messages")
+        .orderBy('timestamp')
         .get();
     snapshot.docs.forEach((element) {
       tMessages.add(element.data());
@@ -28,14 +31,15 @@ class _MessageScreenState extends State<MessageScreen> {
     });
   }
 
-  void sendMessage(String key) async {
+  void sendMessage(String key, String message) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
+    var uid = FirebaseAuth.instance.currentUser.uid;
     await firestore
         .collection("chats")
         .doc(key)
         .collection("messages")
         .doc()
-        .set({'message': "a new message"});
+        .set({'message': message, 'sender': uid, 'timestamp': Timestamp.now()});
     loadMessages(key);
   }
 
@@ -43,6 +47,8 @@ class _MessageScreenState extends State<MessageScreen> {
   Widget build(BuildContext context) {
     var argument =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    var msgFieldController = TextEditingController();
+
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 255, 200, 33),
         appBar: AppBar(
@@ -51,7 +57,7 @@ class _MessageScreenState extends State<MessageScreen> {
         body: Column(
           children: [
             ElevatedButton(
-              child: Text("Click me"),
+              child: Text("Refresh"),
               onPressed: () => this.loadMessages(argument['key']),
             ),
             messages.length > 0
@@ -60,12 +66,23 @@ class _MessageScreenState extends State<MessageScreen> {
                         padding: const EdgeInsets.all(8),
                         itemCount: messages.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                              height: 40,
-                              child: GestureDetector(
-                                child: Text(messages[index]['message']),
-                                onTap: () {},
-                              ));
+                          return messages[index]['sender'] !=
+                                  FirebaseAuth.instance.currentUser.uid
+                              ? Container(
+                                  height: 40,
+                                  child: GestureDetector(
+                                    child: Text(messages[index]['message']),
+                                    onTap: () {},
+                                  ))
+                              : Container(
+                                  height: 40,
+                                  child: GestureDetector(
+                                    child: Text(
+                                      messages[index]['message'],
+                                      textAlign: TextAlign.right,
+                                    ),
+                                    onTap: () {},
+                                  ));
                         }))
                 : Text("Nothing"),
             Expanded(
@@ -74,11 +91,17 @@ class _MessageScreenState extends State<MessageScreen> {
                 child: Padding(
                   padding: EdgeInsets.all(20),
                   child: TextField(
+                    controller: msgFieldController,
                     decoration: InputDecoration(
                         hintText: "Type your message here",
                         suffix: IconButton(
                           onPressed: () {
-                            sendMessage(argument['key']);
+                            if (msgFieldController.text.isEmpty) {
+                              return;
+                            }
+                            sendMessage(
+                                argument['key'], msgFieldController.text);
+                            msgFieldController.clear();
                           },
                           icon: Icon(Icons.send),
                         )),
