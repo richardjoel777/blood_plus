@@ -29,7 +29,7 @@ class DonationHistoryScreen extends StatelessWidget {
             padding: EdgeInsets.all(15),
             margin: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
             height: 590,
-            child: donationsData.donationHistory.length > 0
+            child: donationsData.donationsHistory.length > 0
                 ? ListView.builder(
                     itemBuilder: (context, index) {
                       return Container(
@@ -44,7 +44,7 @@ class DonationHistoryScreen extends StatelessWidget {
                                 child: FittedBox(
                                   fit: BoxFit.fitWidth,
                                   child: Text(
-                                    donationsData.donationHistory[index].bloodGroup,
+                                    donationsData.donationsHistory[index].bloodGroup,
                                     style: Theme.of(context)
                                         .textTheme
                                         .headline1
@@ -53,14 +53,14 @@ class DonationHistoryScreen extends StatelessWidget {
                                 ),
                               ),
                               title: Text(
-                                donationsData.donationHistory[index].name,
+                                donationsData.donationsHistory[index].name,
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline1
                                     .copyWith(color: Colors.black),
                               ),
                               trailing: Text(
-                                donationsData.donationHistory[index].date,
+                                donationsData.donationsHistory[index].date,
                                 style: Theme.of(context).textTheme.headline1,
                               ),
                             ),
@@ -69,7 +69,7 @@ class DonationHistoryScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    itemCount: donationsData.donationHistory.length,
+                    itemCount: donationsData.donationsHistory.length,
                   )
                 : Center(
                     child: Text("No History yet. make it now :)",

@@ -16,6 +16,10 @@ class AuthProvider with ChangeNotifier {
     return user != null ? UserData(user.uid) : null;
   }
 
+  User get currentUser {
+    return firebaseAuth.currentUser;
+  }
+
   Future signInEmail(String email, String password) async {
     try {
       UserCredential result = await firebaseAuth.signInWithEmailAndPassword(

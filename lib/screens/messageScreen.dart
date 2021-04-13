@@ -11,7 +11,7 @@ class MessageScreen extends StatefulWidget {
 class _MessageScreenState extends State<MessageScreen> {
   var messages = [];
   void test() async {
-    var t_messages = [];
+    var tMessages = [];
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     var snapshot = await firestore
         .collection("chats")
@@ -19,11 +19,11 @@ class _MessageScreenState extends State<MessageScreen> {
         .collection("messages")
         .get();
     snapshot.docs.forEach((element) {
-      t_messages.add(element.data());
+      tMessages.add(element.data());
       print(element.data()['message']);
     });
     setState(() {
-      messages = t_messages;
+      messages = tMessages;
       print(messages[0]['message']);
     });
   }

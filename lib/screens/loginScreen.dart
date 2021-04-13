@@ -1,5 +1,4 @@
 import 'package:blood_plus/providers/auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
@@ -8,10 +7,10 @@ import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
   static const String routeName = '/login';
-  TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
   @override
   Widget build(BuildContext context) {
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
     final _auth = Provider.of<AuthProvider>(context);
     return Scaffold(
         backgroundColor: Colors.white,
@@ -116,7 +115,8 @@ class LoginScreen extends StatelessWidget {
                 TextButton(
                   style: TextButton.styleFrom(primary: Colors.black),
                   onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(RegisterScreen.routeName, (route) => false);
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        RegisterScreen.routeName, (route) => false);
                   },
                   child: Text(
                     "Don't have an account? signup here!",

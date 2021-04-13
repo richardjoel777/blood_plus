@@ -12,7 +12,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   var connections = [];
   void test() async {
-    var t_connections = [];
+    var tConnections = [];
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     var snapshot = await firestore
         .collection("users")
@@ -20,11 +20,11 @@ class _ChatScreenState extends State<ChatScreen> {
         .collection("connections")
         .get();
     snapshot.docs.forEach((element) {
-      t_connections.add(element.data());
+      tConnections.add(element.data());
       print(element.data()['name']);
     });
     setState(() {
-      connections = t_connections;
+      connections = tConnections;
       print(connections[0]['name']);
     });
   }
