@@ -1,5 +1,6 @@
 import 'package:blood_plus/providers/auth.dart';
 import 'package:blood_plus/providers/bloods.dart';
+import 'package:blood_plus/providers/chats.dart';
 import 'package:blood_plus/providers/donations.dart';
 import 'package:blood_plus/providers/user.dart';
 import 'package:blood_plus/screens/chatScreen.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
           ),
           ChangeNotifierProvider(create: (ctx) => AuthProvider()),
           ChangeNotifierProvider(create: (ctx) => CurrentUser()),
+          ChangeNotifierProvider(create: (ctx) => Connections()),
         ],
         child: MaterialApp(
           title: 'Flutter Demo',
