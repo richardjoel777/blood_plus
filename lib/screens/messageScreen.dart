@@ -43,6 +43,12 @@ class _MessageScreenState extends State<MessageScreen> {
         .collection("messages")
         .doc()
         .set({'message': message, 'sender': uid, 'timestamp': Timestamp.now()});
+    await firestore
+        .collection('usersData')
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .collection('connections')
+        .doc(key)
+        .update({'lastTime': Timestamp.now()});
   }
 
   @override

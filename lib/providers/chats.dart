@@ -16,6 +16,7 @@ class Connections with ChangeNotifier {
         .collection('usersData')
         .doc(firebaseAuth.currentUser.uid)
         .collection('connections')
+        .orderBy('lastTime', descending: true)
         .snapshots()
         .listen((event) {
       var t_connections = [];

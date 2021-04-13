@@ -26,10 +26,25 @@ Future<void> initiateChat(String other_uid, String other_name) async {
             .doc(other_uid)
             .collection('connections')
             .doc(_connectionRef.id),
-        {'name': _auth.currentUser.displayName ?? "Name not available"});
+        {
+          'name': _auth.currentUser.displayName ?? "Name not available",
+          'lastTime': Timestamp.now()
+        });
     batch.update(_userRef, {
       'accepted': FieldValue.arrayUnion([other_uid])
     });
+
+    batch.set(
+        _firestore
+            .collection('chats')
+            .doc(_connectionRef.id)
+            .collection('messages')
+            .doc(),
+        {
+          "message": "You've been connected",
+          'sender': 'Admin',
+          'timestamp': Timestamp.now()
+        });
     await batch.commit();
   } catch (e) {
     print("Error happened initiating the chat" + e.toString());
