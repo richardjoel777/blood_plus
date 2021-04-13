@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -12,22 +11,26 @@ class MessageScreen extends StatefulWidget {
 
 class _MessageScreenState extends State<MessageScreen> {
   var messages = [];
+  bool isFirst = true;
+
   void loadMessages(String key) async {
-    var tMessages = [];
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    var snapshot = await firestore
+    firestore
         .collection("chats")
         .doc(key)
         .collection("messages")
         .orderBy('timestamp')
-        .get();
-    snapshot.docs.forEach((element) {
-      tMessages.add(element.data());
-      print(element.data()['message']);
-    });
-    setState(() {
-      messages = tMessages;
-      print(messages[0]['message']);
+        .snapshots()
+        .listen((event) {
+      var tMessages = [];
+      event.docs.forEach((element) {
+        tMessages.add(element.data());
+        if (tMessages.length == event.size) {
+          setState(() {
+            messages = tMessages;
+          });
+        }
+      });
     });
   }
 
@@ -40,7 +43,6 @@ class _MessageScreenState extends State<MessageScreen> {
         .collection("messages")
         .doc()
         .set({'message': message, 'sender': uid, 'timestamp': Timestamp.now()});
-    loadMessages(key);
   }
 
   @override
@@ -49,6 +51,11 @@ class _MessageScreenState extends State<MessageScreen> {
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     var msgFieldController = TextEditingController();
 
+    if (isFirst) {
+      this.loadMessages(argument['key']);
+      isFirst = false;
+    }
+
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 255, 200, 33),
         appBar: AppBar(
@@ -56,10 +63,6 @@ class _MessageScreenState extends State<MessageScreen> {
         ),
         body: Column(
           children: [
-            ElevatedButton(
-              child: Text("Refresh"),
-              onPressed: () => this.loadMessages(argument['key']),
-            ),
             messages.length > 0
                 ? Expanded(
                     child: ListView.builder(
