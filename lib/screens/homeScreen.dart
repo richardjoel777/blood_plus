@@ -5,10 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
+  bool isFirst = true;
   @override
   Widget build(BuildContext context) {
     final bloodData = Provider.of<Bloods>(context);
     final currentUserData = Provider.of<CurrentUser>(context);
+    if (isFirst) {
+      currentUserData.loadUserData();
+      isFirst = false;
+    }
     return Padding(
       padding: EdgeInsets.only(right: 15, left: 15, top: 25, bottom: 10),
       child: Column(
@@ -41,7 +46,7 @@ class HomePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      currentUserData.userData['name'],
+                      currentUserData.userData['name'] ?? "loading...",
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),

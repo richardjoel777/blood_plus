@@ -15,7 +15,11 @@ class Donations with ChangeNotifier {
   }
 
   void getRequests() {
-    _firestore.collection('requests').snapshots().listen((event) {
+    _firestore
+        .collection('requests')
+        .orderBy('date', descending: true)
+        .snapshots()
+        .listen((event) {
       List<Request> res = [];
       event.docs.forEach((element) {
         res.add(Request(

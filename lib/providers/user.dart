@@ -7,10 +7,6 @@ class CurrentUser with ChangeNotifier {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   var userData = {};
 
-  CurrentUser() {
-    loadUserData();
-  }
-
   void loadUserData() {
     _firestore
         .collection('usersData')
