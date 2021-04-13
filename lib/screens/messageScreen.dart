@@ -65,7 +65,7 @@ class _MessageScreenState extends State<MessageScreen> {
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 255, 200, 33),
         appBar: AppBar(
-          title: Text("Messages"),
+          title: Text(argument['name'] ?? "Missing Name"),
         ),
         body: Column(
           children: [
