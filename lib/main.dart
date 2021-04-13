@@ -1,9 +1,12 @@
+
+import 'package:blood_plus/providers/auth.dart';
 import 'package:blood_plus/providers/bloods.dart';
 import 'package:blood_plus/providers/donations.dart';
 import 'package:blood_plus/screens/chatScreen.dart';
 import 'package:blood_plus/screens/loginScreen.dart';
 import 'package:blood_plus/screens/messageScreen.dart';
 import 'package:blood_plus/screens/registerScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,11 +34,11 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (ctx) => Donations(),
           ),
+          ChangeNotifierProvider(create: (ctx) => AuthProvider()),
         ],
         child: MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(
-              backgroundColor: Colors.white,
               primarySwatch: Colors.red,
               accentColor: Colors.yellowAccent,
               canvasColor: Color.fromRGBO(255, 2254, 229, 1),
@@ -59,7 +62,7 @@ class MyApp extends StatelessWidget {
                     fontFamily: 'RobotoCondensed',
                     fontWeight: FontWeight.bold,
                   ))),
-          initialRoute: '/',
+          initialRoute: FirebaseAuth.instance.currentUser==null ? LoginScreen.routeName : '/',
           routes: {
             '/': (ctx) => TabsScreen(),
             DonationHistoryScreen.routeName: (ctx) => DonationHistoryScreen(),

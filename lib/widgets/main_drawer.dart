@@ -1,3 +1,6 @@
+import 'package:blood_plus/screens/loginScreen.dart';
+import 'package:provider/provider.dart';
+import 'package:blood_plus/providers/auth.dart';
 import 'package:blood_plus/screens/donation_history_screen.dart';
 import 'package:flutter/material.dart';
 import '../screens/profileScreen.dart';
@@ -23,6 +26,7 @@ class MainDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _auth = Provider.of<AuthProvider>(context);
     return Drawer(
       child: Column(
         children: [
@@ -57,8 +61,10 @@ class MainDrawer extends StatelessWidget {
               Navigator.of(context).pushNamed(DonationHistoryScreen.routeName);
             },
           ),
-          buildListTile('Logout', Icons.logout, (){
-            
+          buildListTile('Logout', Icons.logout, () {
+            _auth.signOut();
+            Navigator.pushNamedAndRemoveUntil(
+                context, LoginScreen.routeName, (route) => false);
           })
         ],
       ),

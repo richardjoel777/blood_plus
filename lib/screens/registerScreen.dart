@@ -1,3 +1,8 @@
+import 'package:blood_plus/models/user.dart';
+import 'package:blood_plus/providers/auth.dart';
+// import 'package:blood_plus/services/auth.dart';
+import 'package:provider/provider.dart';
+
 import '../screens/loginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -59,14 +64,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final _auth = Provider.of<AuthProvider>(context, listen: false);
     return Scaffold(
-       backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: Text(
-            "Regsister",
-            style: Theme.of(context).textTheme.headline6,
-          ),
-        ),
+        backgroundColor: Colors.white,
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.all(8.0),
@@ -174,7 +174,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           DropdownButton<String>(
                             value: bloodgroup != null ? bloodgroup : null,
-                            items: <String>['A+', 'B+', 'AB', 'O+', 'A-', 'B-', 'AB-', 'O-'].map((String v) {
+                            items: <String>[
+                              'A+',
+                              'B+',
+                              'AB',
+                              'O+',
+                              'A-',
+                              'B-',
+                              'AB-',
+                              'O-'
+                            ].map((String v) {
                               return new DropdownMenuItem<String>(
                                 value: v,
                                 child: Text(v),
@@ -264,6 +273,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               onChanged: (value) {
                                 setState(() {
                                   isnewDonor = value;
+                                  if (value == true) {
+                                    _selectedDonatedDate = null;
+                                  }
                                 });
                               }),
                         ],
@@ -314,7 +326,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           if (nameTextEditingController.text.length < 4) {
                             showErrorMessage(
                                 "Name should be atleast 4 characters");
@@ -343,6 +355,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           } else if (!isnewDonor &&
                               _selectedDonatedDate == null) {
                             showErrorMessage("Last Donated date is mandatory");
+                          } else {
+                            UserData result = await _auth.signUpEmail(
+                                emailTextEditingController.text,
+                                passwordTextEditingController.text);
+                            if (result == null) {
+                              print("Something went wrong");
+                            } else {
+                              await _auth.registerUserData(
+                                  result.uid,
+                                  nameTextEditingController.text,
+                                  emailTextEditingController.text,
+                                  bloodgroup,
+                                  phoneTextEditingController.text,
+                                  addressTextEditingController.text,
+                                  pinCodeTextEditingController.text,
+                                  _selectedDOB,
+                                  isnewDonor,
+                                  _selectedDonatedDate);
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  '/', (route) => false);
+                            }
                           }
                         },
                       )
@@ -356,7 +389,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   },
                   child: Text(
                     "Have an account? Login here!",
-                    style: TextStyle(fontSize: 18.0,fontWeight: FontWeight.bold, fontFamily: "Raleway"),
+                    style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "Raleway"),
                   ),
                 )
               ],
