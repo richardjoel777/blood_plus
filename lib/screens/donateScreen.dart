@@ -14,7 +14,6 @@ class _DonateScreenState extends State<DonateScreen> {
   @override
   Widget build(BuildContext context) {
     final donationRequestsData = Provider.of<Donations>(context);
-    
     return Column(
       children: [
         SizedBox(
@@ -29,15 +28,17 @@ class _DonateScreenState extends State<DonateScreen> {
             // padding: EdgeInsets.all(15),
             height: 559,
             margin: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-            child: donationRequestsData.currentDonationRequests.length > 1
+            child: donationRequestsData.currentDonationRequests.length >= 1
                 ? ListView.builder(
                     itemBuilder: (context, index) {
                       return ChangeNotifierProvider.value(
-                        value: donationRequestsData.currentDonationRequests[index],
+                        value:
+                            donationRequestsData.currentDonationRequests[index],
                         child: DonationRequestItem(),
                       );
                     },
-                    itemCount: donationRequestsData.currentDonationRequests.length)
+                    itemCount:
+                        donationRequestsData.currentDonationRequests.length)
                 : Container(
                     width: double.infinity,
                     child: Column(

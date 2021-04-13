@@ -10,12 +10,12 @@ class MessageScreen extends StatefulWidget {
 
 class _MessageScreenState extends State<MessageScreen> {
   var messages = [];
-  void test() async {
+  void loadMessages(String key) async {
     var tMessages = [];
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     var snapshot = await firestore
         .collection("chats")
-        .doc("2HT4jC0Q0UiMNADbErZB")
+        .doc(key)
         .collection("messages")
         .get();
     snapshot.docs.forEach((element) {
@@ -28,19 +28,21 @@ class _MessageScreenState extends State<MessageScreen> {
     });
   }
 
-  void sendMessage() async {
+  void sendMessage(String key) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     await firestore
         .collection("chats")
-        .doc("2HT4jC0Q0UiMNADbErZB")
+        .doc(key)
         .collection("messages")
         .doc()
         .set({'message': "a new message"});
-    test();
+    loadMessages(key);
   }
 
   @override
   Widget build(BuildContext context) {
+    var argument =
+        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 255, 200, 33),
         appBar: AppBar(
@@ -50,7 +52,7 @@ class _MessageScreenState extends State<MessageScreen> {
           children: [
             ElevatedButton(
               child: Text("Click me"),
-              onPressed: () => this.test(),
+              onPressed: () => this.loadMessages(argument['key']),
             ),
             messages.length > 0
                 ? Expanded(
@@ -76,7 +78,7 @@ class _MessageScreenState extends State<MessageScreen> {
                         hintText: "Type your message here",
                         suffix: IconButton(
                           onPressed: () {
-                            sendMessage();
+                            sendMessage(argument['key']);
                           },
                           icon: Icon(Icons.send),
                         )),

@@ -7,42 +7,31 @@ import 'package:blood_plus/models/request.dart';
 class Donations with ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  List<Request> _currentDonationRequests = [];
+  List<Request> currentDonationRequests = [];
   List<Request> _donationsHistory = [];
 
-  Future<List<Request>> getCurrentDontationRequests() async {
-    List<Request> res = [];
-    try {
-      final String uid = firebaseAuth.currentUser.uid;
-      print('User ID $uid');
-      await _firestore
-          .collection("usersData")
-          .doc(uid)
-          .collection("current_donation_requests")
-          .get()
-          .then((QuerySnapshot snapshot) {
-        snapshot.docs.forEach((doc) {
-          print('Doc here $doc');
-          res.add(Request(
-              id: doc.id,
-              age: doc["age"],
-              name: doc["name"],
-              date: doc["date"].toString(),
-              uid: doc["uid"],
-              bloodGroup: doc["bloodGroup"],
-              area: doc["area"]));
-        });
-      });
-    } catch (ex) {
-      print(ex);
-    }
-    return res;
+  Donations() {
+    getRequests();
   }
 
-  List<Request> get currentDonationRequests {
-    getCurrentDontationRequests()
-        .then((value) => _currentDonationRequests = value);
-    return [..._currentDonationRequests];
+  void getRequests() {
+    _firestore.collection('requests').snapshots().listen((event) {
+      List<Request> res = [];
+      event.docs.forEach((element) {
+        res.add(Request(
+            id: element.id,
+            age: element["age"],
+            name: element["name"],
+            date: element["date"].toString(),
+            uid: element["uid"],
+            bloodGroup: element["bloodGroup"],
+            area: element["area"]));
+        if (res.length == event.size) {
+          currentDonationRequests = res;
+          notifyListeners();
+        }
+      });
+    });
   }
 
   Future<void> uploadRequest(
@@ -59,12 +48,13 @@ class Donations with ChangeNotifier {
     try {
       final String uid = firebaseAuth.currentUser.uid;
       print('User ID $uid');
-      await _firestore
-          .collection("usersData")
-          .doc(uid)
-          .collection("my_requests")
-          .doc()
-          .set({
+      // await _firestore
+      //     .collection("usersData")
+      //     .doc(uid)
+      //     .collection("my_requests")
+      //     .doc()
+      var ref = _firestore.collection('requests').doc();
+      await ref.set({
         "age": age,
         "name": name,
         "dob": dob,
@@ -165,7 +155,7 @@ class Donations with ChangeNotifier {
     try {
       final String uid = firebaseAuth.currentUser.uid;
       await _firestore
-          .collection("userData")
+          .collection("usersData")
           .doc(uid)
           .collection("donations_history")
           .get()

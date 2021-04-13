@@ -1,4 +1,6 @@
 import 'package:blood_plus/models/request.dart';
+import 'package:blood_plus/screens/chatScreen.dart';
+import 'package:blood_plus/utils/chat.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -56,10 +58,16 @@ class DonationRequestItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        print("initiating chat");
+                        await initiateChat(request.uid, request.name);
+                        print("initiated chat");
+                        Navigator.pushNamed(context, ChatScreen.routeName);
+                      },
                       style: ElevatedButton.styleFrom(primary: Colors.green),
                       child: Text("Accept")),
-                  ElevatedButton(onPressed: () {}, child: Text("Decline")),
+                  // ElevatedButton(
+                  //     onPressed: () {}, child: Text("Decline (shant exist)")),
                 ],
               )
             ],
