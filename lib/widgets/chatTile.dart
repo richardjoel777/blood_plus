@@ -26,6 +26,7 @@ class ChatTile extends StatelessWidget {
                 leading: CircleAvatar(child: Icon(Icons.person), backgroundColor: Colors.grey, foregroundColor: Colors.blueGrey,),
                 title: Text(connection['name'], style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.black, fontSize: 18,),),
                 subtitle: Text('Hello Friend!', style: Theme.of(context).textTheme.headline1.copyWith(fontWeight: FontWeight.normal, fontSize: 14,)),
+                trailing: Text('• Yesteday', style: Theme.of(context).textTheme.headline1.copyWith(fontWeight: FontWeight.normal, fontSize: 13,)),
               onTap: () {
                 Navigator.pushNamed(
                     context, MessageScreen.routeName,

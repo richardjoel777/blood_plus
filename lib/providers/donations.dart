@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:blood_plus/models/request.dart';
+import 'package:intl/intl.dart';
 
 class Donations with ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -10,8 +11,38 @@ class Donations with ChangeNotifier {
   List<Request> currentDonationRequests = [];
   List<Request> _donationsHistory = [];
 
+  List<Request> _myRequests = [
+    Request(
+      id: 'r3',
+      uid: 'u3',
+      name: 'Raveen',
+      age: 43,
+      bloodGroup: "AB+",
+      area: 'Tuticorin',
+      date: "08-04-2020",
+    ),
+    Request(
+      id: 'r4',
+      uid: 'u4',
+      name: 'Ravichandran',
+      age: 36,
+      bloodGroup: "B+",
+      area: 'Erode',
+      date: "12-12-2020",
+    ),
+  ];
+
   Donations() {
     getRequests();
+  }
+
+  void deleteRequest(String id) {
+    _myRequests.removeWhere((element) => element.id == id);
+    notifyListeners();
+  }
+
+  List<Request> get myRequests {
+    return [..._myRequests];
   }
 
   void getRequests() {
@@ -26,7 +57,7 @@ class Donations with ChangeNotifier {
             id: element.id,
             age: element["age"],
             name: element["name"],
-            date: element["date"].toString(),
+            date:  DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(element["date"].seconds)),
             uid: element["uid"],
             bloodGroup: element["bloodGroup"],
             area: element["area"]));

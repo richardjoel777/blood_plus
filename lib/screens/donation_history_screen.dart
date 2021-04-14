@@ -1,3 +1,4 @@
+import 'package:blood_plus/widgets/main_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,6 +10,7 @@ class DonationHistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final donationsData = Provider.of<Donations>(context);
     return Scaffold(
+      drawer: MainDrawer(),
       backgroundColor: Colors.white,
       appBar: AppBar(
           title: Text(
@@ -71,12 +73,42 @@ class DonationHistoryScreen extends StatelessWidget {
                     },
                     itemCount: donationsData.donationsHistory.length,
                   )
-                : Center(
-                    child: Text("No History yet. make it now :)",
-                        style: Theme.of(context).textTheme.headline1.copyWith(
-                              color: Colors.black,
-                              fontSize: 16,
-                            ))),
+                : Container(
+                      width: double.infinity,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                              height: 200,
+                              child: Image.asset(
+                                'assets/images/empty.png',
+                                fit: BoxFit.cover,
+                              )),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text("Your History is Empty",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline1
+                                  .copyWith(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal)),
+                          SizedBox(
+                            height: 35,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context, '/', (route) => false);
+                            },
+                            child: Text('Go Home'),
+                            style: ElevatedButton.styleFrom(
+                                onPrimary: Colors.white),
+                          )
+                        ],
+                      ),
+                    ),
           ),
         ],
       ),

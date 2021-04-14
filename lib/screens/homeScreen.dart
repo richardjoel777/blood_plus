@@ -15,7 +15,8 @@ class HomePage extends StatelessWidget {
       currentUserData.loadUserData();
       isFirst = false;
     }
-    return Padding(
+    return Container(
+      decoration: BoxDecoration(color: Colors.red[100]),
       padding: EdgeInsets.only(right: 15, left: 15, top: 25, bottom: 10),
       child: Column(
         children: [
@@ -102,7 +103,7 @@ class HomePage extends StatelessWidget {
 //       ),
 //   ],
 // ),
-                        child: Text("B+",
+                        child: Text(currentUserData.userData['bloodGroup'],
                             style: Theme.of(context).textTheme.headline6),
                         bottom: 30, right: 30,
                       ),

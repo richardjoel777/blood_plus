@@ -1,4 +1,5 @@
 import 'package:blood_plus/screens/loginScreen.dart';
+import 'package:blood_plus/screens/my_requests.dart';
 import 'package:provider/provider.dart';
 import 'package:blood_plus/providers/auth.dart';
 import 'package:blood_plus/screens/donation_history_screen.dart';
@@ -48,19 +49,30 @@ class MainDrawer extends StatelessWidget {
             height: 20,
           ),
           buildListTile(
+            'Home',
+            Icons.home,
+            () {
+              Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+            },
+          ),
+          buildListTile(
             'My Profile',
             Icons.person,
             () {
-              Navigator.of(context).pushNamed(ProfileScreen.routeName);
+              Navigator.of(context).pushNamedAndRemoveUntil(ProfileScreen.routeName, (route) => false);
             },
           ),
           buildListTile(
             'Donation History',
             Icons.history,
             () {
-              Navigator.of(context).pushNamed(DonationHistoryScreen.routeName);
+              Navigator.of(context).pushNamedAndRemoveUntil(DonationHistoryScreen.routeName, (route) => false);
             },
           ),
+          buildListTile('My Requests', Icons.request_page, () {
+            Navigator.pushNamedAndRemoveUntil(
+                context, MyRequestsScreen.routeName, (route) => false);
+          }),
           buildListTile('Logout', Icons.logout, () {
             _auth.signOut();
             Navigator.pushNamedAndRemoveUntil(

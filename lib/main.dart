@@ -6,6 +6,7 @@ import 'package:blood_plus/providers/user.dart';
 import 'package:blood_plus/screens/chatScreen.dart';
 import 'package:blood_plus/screens/loginScreen.dart';
 import 'package:blood_plus/screens/messageScreen.dart';
+import 'package:blood_plus/screens/my_requests.dart';
 import 'package:blood_plus/screens/registerScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
               primarySwatch: Colors.red,
               accentColor: Colors.yellowAccent,
-              canvasColor: Color.fromRGBO(255, 2254, 229, 1),
+              // canvasColor: Color.fromRGBO(255, 2254, 229, 1),
               fontFamily: 'Raleway',
               textTheme: ThemeData.light().textTheme.copyWith(
                   bodyText2: TextStyle(
@@ -77,6 +78,7 @@ class MyApp extends StatelessWidget {
             LoginScreen.routeName: (ctx) => LoginScreen(),
             ChatScreen.routeName: (ctx) => ChatScreen(),
             MessageScreen.routeName: (ctx) => MessageScreen(),
+            MyRequestsScreen.routeName: (ctx) => MyRequestsScreen(),
           },
         ));
   }
