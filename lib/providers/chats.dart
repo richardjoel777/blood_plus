@@ -19,14 +19,14 @@ class Connections with ChangeNotifier {
         .orderBy('lastTime', descending: true)
         .snapshots()
         .listen((event) {
-      var t_connections = [];
+      var tConnections = [];
       event.docs.forEach((element) {
-        t_connections.add({
+        tConnections.add({
           ...element.data(),
           ...{'key': element.id}
         });
-        if (t_connections.length == event.size) {
-          connections = t_connections;
+        if (tConnections.length == event.size) {
+          connections = tConnections;
           notifyListeners();
         }
       });
