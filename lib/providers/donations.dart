@@ -49,13 +49,14 @@ class Donations with ChangeNotifier {
         .orderBy('date', descending: true)
         .snapshots()
         .listen((event) {
-      int size = event.size;
+      int i = 0;
       List<Request> res = [];
       List<Request> resMy = [];
       List<Request> resAcc = [];
       List<Request> resSucc = [];
 
       event.docs.forEach((element) {
+        i++;
         Request request = Request(
             id: element.id,
             age: element["age"],
@@ -75,11 +76,11 @@ class Donations with ChangeNotifier {
         } catch (e) {
           if (element['uid'] == firebaseAuth.currentUser.uid) {
             resMy.add(request);
-          } else {
+          } else if (!acceptedRequestIds.contains(element.id)) {
             res.add(request);
           }
         }
-        if (res.length + resMy.length + resSucc.length == size) {
+        if (i == event.size) {
           currentDonationRequests = res;
           successfulDonations = resSucc;
           myRequests = resMy;
