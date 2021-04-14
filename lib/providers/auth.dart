@@ -54,6 +54,7 @@ class AuthProvider with ChangeNotifier {
       'dob': dob,
       'isNewDonor': isNewDonor,
       'lastDonatedDate': lastDonatedDate,
+      'accepted': [],
     });
     registeredUser
         .then((value) => Fluttertoast.showToast(msg: "User added Successfully"))

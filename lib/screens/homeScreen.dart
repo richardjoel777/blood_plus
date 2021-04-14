@@ -113,7 +113,10 @@ class HomePage extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("3",
+                    Text(
+                        currentUserData.userData['accepted'].length
+                                .toString() ??
+                            '0',
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold)),
                     SizedBox(
