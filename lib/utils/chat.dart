@@ -20,7 +20,12 @@ Future<void> initiateChat(
     }
 
     WriteBatch batch = _firestore.batch();
-    batch.set(_connectionRef, {'name': otherName});
+    batch.set(_connectionRef, {
+      'name': otherName,
+      'uid': otherUid,
+      'lastTime': Timestamp.now(),
+      'lastMessage': "You've been connected"
+    });
     batch.set(
         _firestore
             .collection('usersData')
@@ -29,6 +34,7 @@ Future<void> initiateChat(
             .doc(_connectionRef.id),
         {
           'name': _auth.currentUser.displayName ?? "Name not available",
+          'uid': _auth.currentUser.uid,
           'lastTime': Timestamp.now(),
           'lastMessage': "You've been connected"
         });

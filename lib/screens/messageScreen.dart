@@ -38,7 +38,7 @@ class _MessageScreenState extends State<MessageScreen> {
     });
   }
 
-  void sendMessage(String key, String message) async {
+  void sendMessage(String key, String message, String uid) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     var uid = FirebaseAuth.instance.currentUser.uid;
     await firestore
@@ -50,6 +50,12 @@ class _MessageScreenState extends State<MessageScreen> {
     await firestore
         .collection('usersData')
         .doc(FirebaseAuth.instance.currentUser.uid)
+        .collection('connections')
+        .doc(key)
+        .update({'lastTime': Timestamp.now(), 'lastMessage': message});
+    await firestore
+        .collection('usersData')
+        .doc(uid)
         .collection('connections')
         .doc(key)
         .update({'lastTime': Timestamp.now(), 'lastMessage': message});
@@ -83,7 +89,7 @@ class _MessageScreenState extends State<MessageScreen> {
       if (msgFieldController.text.isEmpty) {
         return;
       }
-      sendMessage(argument['key'], msgFieldController.text);
+      sendMessage(argument['key'], msgFieldController.text, argument['uid']);
       msgFieldController.clear();
       scrollController.jumpTo(scrollController.position.maxScrollExtent);
     }
