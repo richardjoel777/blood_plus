@@ -9,40 +9,38 @@ class Donations with ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   List<Request> currentDonationRequests = [];
-  List<Request> _donationsHistory = [];
-
-  List<Request> _myRequests = [
-    Request(
-      id: 'r3',
-      uid: 'u3',
-      name: 'Raveen',
-      age: 43,
-      bloodGroup: "AB+",
-      area: 'Tuticorin',
-      date: "08-04-2020",
-    ),
-    Request(
-      id: 'r4',
-      uid: 'u4',
-      name: 'Ravichandran',
-      age: 36,
-      bloodGroup: "B+",
-      area: 'Erode',
-      date: "12-12-2020",
-    ),
-  ];
+  List<Request> myRequests = [];
+  List<Request> donationsHistory = [];
+  List<Request> successfulDonations = [];
+  var acceptedRequestIds = [];
 
   Donations() {
+    getAcceptedRequests();
     getRequests();
   }
 
-  void deleteRequest(String id) {
-    _myRequests.removeWhere((element) => element.id == id);
-    notifyListeners();
+  Future<void> deleteRequest(String id) async {
+    try {
+      await _firestore
+          .collection('requests')
+          .doc(id)
+          .update({'status': 'removed'});
+      Fluttertoast.showToast(msg: "Your request is successfully removed!");
+    } catch (e) {
+      Fluttertoast.showToast(
+          msg: "Something's wrong. Check your internet connection");
+      print("Error happened deleting the request " + e.toString());
+    }
   }
 
-  List<Request> get myRequests {
-    return [..._myRequests];
+  void getAcceptedRequests() {
+    _firestore
+        .collection('usersData')
+        .doc(firebaseAuth.currentUser.uid)
+        .snapshots()
+        .listen((event) {
+      acceptedRequestIds = event.data()['accepted'];
+    });
   }
 
   void getRequests() {
@@ -51,18 +49,41 @@ class Donations with ChangeNotifier {
         .orderBy('date', descending: true)
         .snapshots()
         .listen((event) {
+      int size = event.size;
       List<Request> res = [];
+      List<Request> resMy = [];
+      List<Request> resAcc = [];
+      List<Request> resSucc = [];
+
       event.docs.forEach((element) {
-        res.add(Request(
+        Request request = Request(
             id: element.id,
             age: element["age"],
             name: element["name"],
-            date:  DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(element["date"].seconds)),
+            date: DateFormat.yMMMd().format(
+                DateTime.fromMillisecondsSinceEpoch(element["date"].seconds)),
             uid: element["uid"],
             bloodGroup: element["bloodGroup"],
-            area: element["area"]));
-        if (res.length == event.size) {
+            area: element["area"]);
+        if (acceptedRequestIds.contains(element.id)) {
+          resAcc.add(request);
+        }
+        try {
+          if (element['status'] == 'removed') {
+            resSucc.add(request);
+          }
+        } catch (e) {
+          if (element['uid'] == firebaseAuth.currentUser.uid) {
+            resMy.add(request);
+          } else {
+            res.add(request);
+          }
+        }
+        if (res.length + resMy.length + resSucc.length == size) {
           currentDonationRequests = res;
+          successfulDonations = resSucc;
+          myRequests = resMy;
+          donationsHistory = resAcc;
           notifyListeners();
         }
       });
@@ -82,12 +103,6 @@ class Donations with ChangeNotifier {
   ) async {
     try {
       final String uid = firebaseAuth.currentUser.uid;
-      print('User ID $uid');
-      // await _firestore
-      //     .collection("usersData")
-      //     .doc(uid)
-      //     .collection("my_requests")
-      //     .doc()
       var ref = _firestore.collection('requests').doc();
       await ref.set({
         "age": age,
@@ -102,117 +117,9 @@ class Donations with ChangeNotifier {
         "area": area,
       });
     } catch (ex) {
-      print(ex);
+      Fluttertoast.showToast(
+          msg: "Something's wrong. Check your internet connection");
+      print("Error happened while uploading request" + ex.toString());
     }
-  }
-
-  //= [
-  //   Request(
-  //     id: 'r1',
-  //     uid: 'u1',
-  //     name: 'Richard',
-  //     age: 18,
-  //     area: 'Trichy',
-  //     bloodGroup: "A+",
-  //     date: "12-04-2021",
-  //   ),
-  //   Request(
-  //     id: 'r2',
-  //     uid: 'u2',
-  //     name: 'Robin',
-  //     age: 22,
-  //     bloodGroup: "B+",
-  //     area: 'Thirunelveli',
-  //     date: "15-04-2021",
-  //   ),
-  //   Request(
-  //     id: 'r3',
-  //     uid: 'u3',
-  //     name: 'Raveen',
-  //     age: 43,
-  //     bloodGroup: "AB+",
-  //     area: 'Tuticorin',
-  //     date: "08-04-2021",
-  //   ),
-  //   Request(
-  //     id: 'r4',
-  //     uid: 'u4',
-  //     name: 'Ravichandran',
-  //     age: 36,
-  //     bloodGroup: "B+",
-  //     area: 'Erode',
-  //     date: "10-04-2021",
-  //   ),
-  //   Request(
-  //     id: 'r5',
-  //     uid: 'u5',
-  //     name: 'Pravin',
-  //     age: 15,
-  //     bloodGroup: "O+",
-  //     area: 'Salem',
-  //     date: "07-04-2021",
-  //   ),
-  //   Request(
-  //     id: 'r6',
-  //     uid: 'u6',
-  //     name: 'Premnath',
-  //     age: 62,
-  //     bloodGroup: "A+",
-  //     area: 'Coimbatore',
-  //     date: "11-04-2021",
-  //   ),
-  // ];
-  // List<Request> get currentDonationRequests {
-  //   return [..._currentDonationRequests];
-  // }
-
-  // = [
-  //   Request(
-  //     id: 'r3',
-  //     uid: 'u3',
-  //     name: 'Raveen',
-  //     age: 43,
-  //     bloodGroup: "AB+",
-  //     area: 'Tuticorin',
-  //     date: "08-04-2020",
-  //   ),
-  //   Request(
-  //     id: 'r4',
-  //     uid: 'u4',
-  //     name: 'Ravichandran',
-  //     age: 36,
-  //     bloodGroup: "B+",
-  //     area: 'Erode',
-  //     date: "12-12-2020",
-  //   ),
-  // ];
-  Future<void> getDonationHistory() async {
-    try {
-      final String uid = firebaseAuth.currentUser.uid;
-      await _firestore
-          .collection("usersData")
-          .doc(uid)
-          .collection("donations_history")
-          .get()
-          .then((QuerySnapshot snapshot) {
-        snapshot.docs.forEach((doc) {
-          _donationsHistory.add(Request(
-              id: doc.id,
-              age: doc["age"],
-              name: doc["name"],
-              date: doc["date"],
-              uid: doc["uid"],
-              bloodGroup: doc["bloodGroup"],
-              area: doc["area"]));
-        });
-      });
-    } catch (ex) {
-      Fluttertoast.showToast(msg: "Something went wrong");
-    }
-  }
-
-  List<Request> get donationsHistory {
-    getDonationHistory();
-    return [..._donationsHistory];
   }
 }

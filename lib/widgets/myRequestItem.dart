@@ -43,8 +43,9 @@ class MyRequestItem extends StatelessWidget {
                           },
                           child: Text('No')),
                       TextButton(
-                          onPressed: () {
-                            Provider.of<Donations>(context, listen: false).deleteRequest(id);
+                          onPressed: () async {
+                            await Provider.of<Donations>(context, listen: false)
+                                .deleteRequest(id);
                             Navigator.of(ctx).pop();
                           },
                           child: Text('Yes'))
