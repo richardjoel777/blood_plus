@@ -60,10 +60,11 @@ class DonationRequestItem extends StatelessWidget {
                   ElevatedButton(
                       onPressed: () async {
                         print("initiating chat");
-                        await initiateChat(request.uid, request.name);
+                        await initiateChat(
+                            request.id, request.uid, request.name);
                         print("initiated chat");
-                        Navigator.of(context).pushNamed(
-                            ChatScreen.routeName, arguments: true);
+                        Navigator.of(context)
+                            .pushNamed(ChatScreen.routeName, arguments: true);
                       },
                       style: ElevatedButton.styleFrom(primary: Colors.green),
                       child: Text("Accept")),

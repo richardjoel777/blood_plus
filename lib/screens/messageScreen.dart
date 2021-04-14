@@ -52,7 +52,7 @@ class _MessageScreenState extends State<MessageScreen> {
         .doc(FirebaseAuth.instance.currentUser.uid)
         .collection('connections')
         .doc(key)
-        .update({'lastTime': Timestamp.now()});
+        .update({'lastTime': Timestamp.now(), 'lastMessage': message});
   }
 
   TextEditingController msgFieldController = TextEditingController();
@@ -79,6 +79,7 @@ class _MessageScreenState extends State<MessageScreen> {
             ));
 
     void handleSendMessage() {
+      msgFieldController.text = msgFieldController.text.trim();
       if (msgFieldController.text.isEmpty) {
         return;
       }
@@ -113,4 +114,3 @@ class _MessageScreenState extends State<MessageScreen> {
     );
   }
 }
-

@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-Future<void> initiateChat(String otherUid, String otherName) async {
+Future<void> initiateChat(
+    String requestId, String otherUid, String otherName) async {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   FirebaseAuth _auth = FirebaseAuth.instance;
   DocumentReference _userRef =
@@ -13,7 +14,7 @@ Future<void> initiateChat(String otherUid, String otherName) async {
     var snapshot = await _userRef.get();
     accepted = snapshot.data()['accepted'];
 
-    if (accepted != null && accepted.contains(otherUid)) {
+    if (accepted != null && accepted.contains(requestId)) {
       Fluttertoast.showToast(msg: "You already accepted this request");
       return;
     }
@@ -28,10 +29,11 @@ Future<void> initiateChat(String otherUid, String otherName) async {
             .doc(_connectionRef.id),
         {
           'name': _auth.currentUser.displayName ?? "Name not available",
-          'lastTime': Timestamp.now()
+          'lastTime': Timestamp.now(),
+          'lastMessage': "You've been connected"
         });
     batch.update(_userRef, {
-      'accepted': FieldValue.arrayUnion([otherUid])
+      'accepted': FieldValue.arrayUnion([requestId])
     });
 
     batch.set(
