@@ -1,8 +1,8 @@
 import 'package:blood_plus/screens/messageScreen.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class ChatTile extends StatelessWidget {
+class ChatTile extends StatefulWidget {
   const ChatTile({
     Key key,
     @required this.connection,
@@ -11,7 +11,35 @@ class ChatTile extends StatelessWidget {
   final connection;
 
   @override
+  _ChatTileState createState() => _ChatTileState();
+}
+
+class _ChatTileState extends State<ChatTile> {
+  String checkDate() {
+    DateTime checkedTime = DateTime.fromMillisecondsSinceEpoch(
+        widget.connection["lastTime"].seconds * 1000);
+    print(DateFormat.jm().format(checkedTime));
+    DateTime currentTime = DateTime.now();
+
+    if ((currentTime.year == checkedTime.year) &&
+        (currentTime.month == checkedTime.month) &&
+        (currentTime.day == checkedTime.day)) {
+      return DateFormat.jm().format(checkedTime);
+    } else if ((currentTime.year == checkedTime.year) &&
+        (currentTime.month == checkedTime.month)) {
+      if ((currentTime.day - checkedTime.day) == 1) {
+        return "YESTERDAY";
+      } else if ((currentTime.day - checkedTime.day) == -1) {
+        return "TOMORROW";
+      } else {
+        return DateFormat.MMMd().format(checkedTime);
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    var message = widget.connection;
     return Column(
       children: [
         Container(
@@ -28,27 +56,25 @@ class ChatTile extends StatelessWidget {
                 foregroundColor: Colors.blueGrey,
               ),
               title: Text(
-                connection['name'],
+                widget.connection['name'],
                 style: Theme.of(context).textTheme.headline6.copyWith(
                       color: Colors.black,
                       fontSize: 18,
                     ),
               ),
-              subtitle: Text(connection['lastMessage'] ?? '',
+              subtitle: Text(message != null ? '${message["lastMessage"]}' : '',
                   style: Theme.of(context).textTheme.headline1.copyWith(
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
                       )),
-              trailing: Text(
-                  connection['lastTime'].toDate().toString().substring(0, 19) ??
-                      '',
+              trailing: Text(message != null ? '${checkDate()}' : '',
                   style: Theme.of(context).textTheme.headline1.copyWith(
                         fontWeight: FontWeight.normal,
                         fontSize: 13,
                       )),
               onTap: () {
                 Navigator.pushNamed(context, MessageScreen.routeName,
-                    arguments: connection);
+                    arguments: widget.connection);
               },
             ))),
         Divider(),
