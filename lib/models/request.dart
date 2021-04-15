@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 class Request with ChangeNotifier {
   final String id;
   final String uid;
+  final String pincode;
   final String name;
   final int age;
   final String bloodGroup;
@@ -10,5 +11,12 @@ class Request with ChangeNotifier {
   final String area;
 
   Request(
-      {this.id, this.name, this.date, this.area, this.bloodGroup, this.age, this.uid});
+      {this.id,
+      this.name,
+      this.date,
+      this.area,
+      this.bloodGroup,
+      this.pincode,
+      this.age,
+      this.uid});
 }

@@ -316,6 +316,8 @@ class _RequestsScreenState extends State<RequestsScreen> {
                             isCritical);
                         Fluttertoast.showToast(
                             msg: "Your Request is successfully placed");
+                            Navigator.pushNamedAndRemoveUntil(
+                          context, '/', (route) => false);
                       }
                     },
                   )

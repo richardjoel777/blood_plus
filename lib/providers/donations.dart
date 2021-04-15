@@ -12,11 +12,22 @@ class Donations with ChangeNotifier {
   List<Request> myRequests = [];
   List<Request> donationsHistory = [];
   List<Request> successfulDonations = [];
+  List<Request> loadedRequests = [];
   var acceptedRequestIds = [];
 
   Donations() {
     getAcceptedRequests();
     getRequests();
+  }
+
+  void addLoadedRequest(var r) {
+    loadedRequests.add(r);
+    notifyListeners();
+  }
+
+  void clearLoadedrequests() {
+    loadedRequests = [];
+    notifyListeners();
   }
 
   List<Request> get currentDonationRequests {
@@ -65,6 +76,7 @@ class Donations with ChangeNotifier {
             id: element.id,
             age: element["age"],
             name: element["name"],
+            pincode: element["pincode"],
             date: DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(
                 element["date"].seconds * 1000)),
             uid: element["uid"],
