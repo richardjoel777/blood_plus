@@ -31,10 +31,9 @@ class _ChatTileState extends State<ChatTile> {
         return "YESTERDAY";
       } else if ((currentTime.day - checkedTime.day) == -1) {
         return "TOMORROW";
-      } else {
-        return DateFormat.MMMd().format(checkedTime);
-      }
+      } 
     }
+    return DateFormat.MMMd().format(checkedTime);
   }
 
   @override

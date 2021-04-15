@@ -21,21 +21,28 @@ class MyRequestItem extends StatelessWidget {
           backgroundColor: Theme.of(context).primaryColor,
           foregroundColor: Colors.white,
           child: FittedBox(
-            child: Text(bloodGroup),
+            child: Text(bloodGroup, style: Theme.of(context)
+                                        .textTheme
+                                        .headline1
+                                        .copyWith(color: Colors.white),),
             fit: BoxFit.fitWidth,
           ),
         ),
       ),
-      title: Text(name),
-      subtitle: Text(date),
+      title: Text(name, style: Theme.of(context)
+                                    .textTheme
+                                    .headline1
+                                    .copyWith(color: Colors.black, fontSize: 16)),
+      subtitle: Text(date, style: Theme.of(context).textTheme.headline1,),
       trailing: TextButton(
         child: Icon(Icons.delete),
         onPressed: () {
           return showDialog(
               context: context,
               builder: (ctx) => AlertDialog(
-                    title: Text('Are You Sure?'),
-                    content: Text('Do You want to Delete it?'),
+                    title: Text('Are You Sure?', style: TextStyle(color: Colors.black),),
+                    // titleTextStyle: TextStyle(color: Colors.black,),
+                    content: Text('Do You want to remove it from the list?'),
                     actions: [
                       TextButton(
                           onPressed: () {

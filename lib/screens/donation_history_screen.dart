@@ -29,7 +29,7 @@ class DonationHistoryScreen extends StatelessWidget {
                   .copyWith(color: Colors.black)),
           Container(
             padding: EdgeInsets.all(15),
-            margin: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+            margin: EdgeInsets.symmetric(vertical: 15),
             height: 590,
             child: donationsData.donationsHistory.length > 0
                 ? ListView.builder(

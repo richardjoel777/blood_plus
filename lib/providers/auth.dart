@@ -62,6 +62,37 @@ class AuthProvider with ChangeNotifier {
     return null;
   }
 
+  Future updateUserData(
+    String uid,
+    String name,
+    String email,
+    String bloodGroup,
+    String phone,
+    String address,
+    String pincode,
+    DateTime dob,
+    bool isNewDonor,
+    DateTime lastDonatedDate,
+    var accepted,
+  ) {
+    var registeredUser = _firestore.collection("usersData").doc(uid).set({
+      'name': name,
+      'email': email,
+      'bloodGroup': bloodGroup,
+      'phone': phone,
+      'address': address,
+      'pincode': pincode,
+      'dob': dob,
+      'isNewDonor': isNewDonor,
+      'lastDonatedDate': lastDonatedDate,
+      'accepted': accepted,
+    });
+    registeredUser
+        .then((value) => Fluttertoast.showToast(msg: "User updated Successfully"))
+        .catchError((ex) => Fluttertoast.showToast(msg: ex.message));
+    return null;
+  }
+
   Future signUpEmail(String email, String password, String name) async {
     try {
       UserCredential result = await firebaseAuth

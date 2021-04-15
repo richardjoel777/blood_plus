@@ -1,6 +1,9 @@
+import 'package:blood_plus/providers/auth.dart';
+import 'package:blood_plus/providers/user.dart';
 import 'package:blood_plus/widgets/main_drawer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 
-import '../screens/loginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -12,12 +15,11 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  bool isInit = true;
   TextEditingController nameTextEditingController = new TextEditingController();
   TextEditingController emailTextEditingController =
       new TextEditingController();
   TextEditingController phoneTextEditingController =
-      new TextEditingController();
-  TextEditingController passwordTextEditingController =
       new TextEditingController();
   TextEditingController addressTextEditingController =
       new TextEditingController();
@@ -27,6 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   DateTime _selectedDOB;
   DateTime _selectedDonatedDate;
   String bloodgroup;
+  var accepted = [];
   void _presentDOBDatePicker() {
     showDatePicker(
             context: context,
@@ -39,6 +42,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _selectedDOB = pickedDate;
       });
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    final currentUserData = Provider.of<CurrentUser>(context, listen: false);
+    if (isInit) {
+      currentUserData.loadUserData();
+      nameTextEditingController.text = currentUserData.userData['name'];
+      emailTextEditingController.text = currentUserData.userData['email'];
+      phoneTextEditingController.text = currentUserData.userData['phone'];
+      addressTextEditingController.text = currentUserData.userData['address'];
+      pinCodeTextEditingController.text = currentUserData.userData['pincode'];
+      isnewDonor = currentUserData.userData['isNewDonor'];
+      _selectedDOB = DateTime.fromMillisecondsSinceEpoch(
+          currentUserData.userData['dob'].seconds * 1000);
+      _selectedDonatedDate = currentUserData.userData['lastDonatedDate'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(
+              currentUserData.userData['lastDonatedDate'].seconds * 1000)
+          : null;
+      bloodgroup = currentUserData.userData['bloodGroup'];
+      accepted = currentUserData.userData['accepted'];
+      isInit = false;
+    }
+    super.didChangeDependencies();
   }
 
   void _presentDonatedDatePicker() {
@@ -61,9 +88,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final _auth = Provider.of<AuthProvider>(context, listen: false);
     return Scaffold(
-      drawer: MainDrawer(),
-       backgroundColor: Colors.white,
+        drawer: MainDrawer(),
+        backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text(
             "Profile",
@@ -88,7 +116,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: 20.0,
                 ),
                 Text(
-                  "Register",
+                  "Update Profile",
                   style: Theme.of(context)
                       .textTheme
                       .headline6
@@ -177,7 +205,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           DropdownButton<String>(
                             value: bloodgroup != null ? bloodgroup : null,
-                            items: <String>['A', 'B', 'C', 'D'].map((String v) {
+                            items: <String>[
+                              'A+',
+                              'B+',
+                              'AB',
+                              'O+',
+                              'A-',
+                              'B-',
+                              'AB-',
+                              'O-'
+                            ].map((String v) {
                               return new DropdownMenuItem<String>(
                                 value: v,
                                 child: Text(v),
@@ -226,20 +263,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                             labelText: "Pin Code",
-                            labelStyle: TextStyle(
-                                fontSize: 14.0, fontFamily: 'RobotoCondensed'),
-                            hintStyle:
-                                TextStyle(color: Colors.grey, fontSize: 10.0)),
-                        style: TextStyle(fontSize: 14.0),
-                      ),
-                      SizedBox(
-                        height: 1,
-                      ),
-                      TextField(
-                        controller: passwordTextEditingController,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            labelText: "Password",
                             labelStyle: TextStyle(
                                 fontSize: 14.0, fontFamily: 'RobotoCondensed'),
                             hintStyle:
@@ -312,12 +335,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           height: 50.0,
                           child: Center(
                             child: Text(
-                              "Create Account",
+                              "Update Account",
                               style: Theme.of(context).textTheme.headline6,
                             ),
                           ),
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           if (nameTextEditingController.text.length < 4) {
                             showErrorMessage(
                                 "Name should be atleast 4 characters");
@@ -339,29 +362,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           } else if (pinCodeTextEditingController
                               .text.isEmpty) {
                             showErrorMessage("Pin Code is mandatory");
-                          } else if (passwordTextEditingController.text.length <
-                              7) {
-                            showErrorMessage(
-                                "Password should be atleast 7 characters");
                           } else if (!isnewDonor &&
                               _selectedDonatedDate == null) {
                             showErrorMessage("Last Donated date is mandatory");
+                          } else {
+                            await _auth.updateUserData(
+                              FirebaseAuth.instance.currentUser.uid,
+                              nameTextEditingController.text,
+                              emailTextEditingController.text,
+                              bloodgroup,
+                              phoneTextEditingController.text,
+                              addressTextEditingController.text,
+                              pinCodeTextEditingController.text,
+                              _selectedDOB,
+                              isnewDonor,
+                              _selectedDonatedDate,
+                              accepted,
+                            );
+                            Navigator.of(context)
+                                .pushNamedAndRemoveUntil('/', (route) => false);
                           }
                         },
                       )
                     ],
                   ),
                 ),
-                TextButton(
-                  style: TextButton.styleFrom(primary: Colors.black),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(LoginScreen.routeName);
-                  },
-                  child: Text(
-                    "Have an account? Login here!",
-                    style: TextStyle(fontSize: 18.0,fontWeight: FontWeight.bold, fontFamily: "Raleway"),
-                  ),
-                )
               ],
             ),
           ),

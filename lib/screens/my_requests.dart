@@ -14,7 +14,7 @@ class MyRequestsScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         drawer: MainDrawer(),
         appBar: AppBar(
-          title: Text('My Requests'),
+          title: Text('My Requests', style: Theme.of(context).textTheme.headline6,),
         ),
         body: Column(children: [
           SizedBox(

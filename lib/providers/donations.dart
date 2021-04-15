@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 class Donations with ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  List<Request> currentDonationRequests = [];
+  List<Request> _currentDonationRequests = [];
   List<Request> myRequests = [];
   List<Request> donationsHistory = [];
   List<Request> successfulDonations = [];
@@ -17,6 +17,10 @@ class Donations with ChangeNotifier {
   Donations() {
     getAcceptedRequests();
     getRequests();
+  }
+
+  List<Request> get currentDonationRequests {
+    return [..._currentDonationRequests];
   }
 
   Future<void> deleteRequest(String id) async {
@@ -61,8 +65,8 @@ class Donations with ChangeNotifier {
             id: element.id,
             age: element["age"],
             name: element["name"],
-            date: DateFormat.yMMMd().format(
-                DateTime.fromMillisecondsSinceEpoch(element["date"].seconds)),
+            date: DateFormat.yMMMd().format(DateTime.fromMillisecondsSinceEpoch(
+                element["date"].seconds * 1000)),
             uid: element["uid"],
             bloodGroup: element["bloodGroup"],
             area: element["area"]);
@@ -81,7 +85,7 @@ class Donations with ChangeNotifier {
           }
         }
         if (i == event.size) {
-          currentDonationRequests = res;
+          _currentDonationRequests = res;
           successfulDonations = resSucc;
           myRequests = resMy;
           donationsHistory = resAcc;

@@ -10,6 +10,14 @@ class DonateScreen extends StatefulWidget {
 }
 
 class _DonateScreenState extends State<DonateScreen> {
+  bool isAreaFilter = false;
+  var loadedRequests = [];
+  // Future getRequestsData(List requests) async {
+  //   requests.retainWhere((r) {
+
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     final donationRequestsData = Provider.of<Donations>(context);
@@ -20,6 +28,30 @@ class _DonateScreenState extends State<DonateScreen> {
           SizedBox(
             height: 20,
           ),
+          Align(
+            alignment: Alignment.topRight,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  'Show requests from 50km radius',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline6
+                      .copyWith(fontSize: 14, color: Colors.black),
+                ),
+                Switch(
+                    value: isAreaFilter,
+                    onChanged: (value) async {
+                      setState(() {
+                        isAreaFilter = value;
+                      });
+                      // await getRequestsData(
+                      //     donationRequestsData.currentDonationRequests);
+                    }),
+              ],
+            ),
+          ),
           Container(
               // padding: EdgeInsets.all(15),
               height: 559,
@@ -28,8 +60,8 @@ class _DonateScreenState extends State<DonateScreen> {
                   ? ListView.builder(
                       itemBuilder: (context, index) {
                         return ChangeNotifierProvider.value(
-                          value:
-                              donationRequestsData.currentDonationRequests[index],
+                          value: donationRequestsData
+                              .currentDonationRequests[index],
                           child: DonationRequestItem(),
                         );
                       },
@@ -46,15 +78,16 @@ class _DonateScreenState extends State<DonateScreen> {
                                 'assets/images/empty.png',
                                 fit: BoxFit.cover,
                               )),
-                           SizedBox(
+                          SizedBox(
                             height: 20,
-                          ),     
+                          ),
                           Text("No Requests for You now",
-                              style:
-                                  Theme.of(context).textTheme.headline1.copyWith(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.normal
-                                      )),               
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline1
+                                  .copyWith(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal)),
                         ],
                       ),
                     )),

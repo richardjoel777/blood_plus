@@ -48,7 +48,7 @@ class HomePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      currentUserData.userData['name'] ?? "loading...",
+                     currentUserData.userData['name'] ?? "loading",
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
@@ -80,30 +80,7 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                       Positioned(
-//   child: Stack(
-//   children: <Widget>[
-//       // Stroked text as border.
-//       Text(
-//         'B+',
-//         style: TextStyle(
-//           fontSize: 15,
-//           foreground: Paint()
-//             ..style = PaintingStyle.stroke
-//             ..strokeWidth = 3
-//             ..color = Colors.black,
-//         ),
-//       ),
-//       // Solid text as fill.
-//       Text(
-//         'B+',
-//         style: TextStyle(
-//           fontSize: 15,
-//           color: Colors.white,
-//         ),
-//       ),
-//   ],
-// ),
-                        child: Text(currentUserData.userData['bloodGroup'],
+            child: Text(currentUserData.userData['bloodGroup'] ?? "loading",
                             style: Theme.of(context).textTheme.headline6),
                         bottom: 30, right: 30,
                       ),
@@ -113,7 +90,7 @@ class HomePage extends StatelessWidget {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(currentUserData.userData['accepted'].length.toString(),
+                    Text(currentUserData.userData['accepted']!=null ? currentUserData.userData['accepted'].length.toString() : " " ?? "loading",
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold)),
                     SizedBox(
@@ -181,47 +158,6 @@ class HomePage extends StatelessWidget {
               ],
             ),
           )
-          //  Container(
-          //   height: 150,
-          //   width: double.infinity,
-          //   padding: EdgeInsets.all(10),
-          //   margin: EdgeInsets.only(bottom: 3),
-          //   decoration: BoxDecoration(
-          //     borderRadius: BorderRadius.circular(25),
-          //     color: Colors.white,
-          //     border: Border.all(color: Colors.red, width: 3)
-          //   ),
-          //  ),
-          //  Text("Recent Blood+ Donations", style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.black),),
-          //  Container(
-          //    height: 217,
-          //    margin: EdgeInsets.only(top: 15),
-          //    decoration: BoxDecoration(
-          //     color: Colors.white,
-          //     boxShadow: [
-          //         BoxShadow(
-          //           color: Colors.grey,
-          //           offset: Offset(0.0, 1.0), //(x,y)
-          //           blurRadius: 6.0,
-          //         ),
-          //       ],
-          //     borderRadius: BorderRadius.circular(15),
-          //   ),
-          //    padding: EdgeInsets.all(15),
-          //    child: ListView.builder(itemBuilder: (context, index){
-          //     return Column(
-          //         children: [
-          //          ListTile(
-          //          title: Text( _recentList[index]['name'], style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.black),),
-          //          subtitle: Text( _recentList[index]['address'], style: Theme.of(context).textTheme.headline1,),
-          //        ),
-          //        Divider(),
-          //        ]
-          //     );
-          //    },
-          //    itemCount: _recentList.length,
-          //    ),
-          //  )
         ],
       ),
     );
