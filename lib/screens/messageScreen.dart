@@ -38,7 +38,7 @@ class _MessageScreenState extends State<MessageScreen> {
     });
   }
 
-  void sendMessage(String key, String message, String uid) async {
+  void sendMessage(String key, String message, String otherUid) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     var uid = FirebaseAuth.instance.currentUser.uid;
     await firestore
@@ -55,7 +55,7 @@ class _MessageScreenState extends State<MessageScreen> {
         .update({'lastTime': Timestamp.now(), 'lastMessage': message});
     await firestore
         .collection('usersData')
-        .doc(uid)
+        .doc(otherUid)
         .collection('connections')
         .doc(key)
         .update({'lastTime': Timestamp.now(), 'lastMessage': message});
