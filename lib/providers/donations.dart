@@ -55,6 +55,7 @@ class Donations with ChangeNotifier {
         .snapshots()
         .listen((event) {
       acceptedRequestIds = event.data()['accepted'];
+      getRequests();
     });
   }
 
