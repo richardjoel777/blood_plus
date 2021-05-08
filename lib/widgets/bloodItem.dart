@@ -5,7 +5,11 @@ class BloodItem extends StatelessWidget {
   final String id;
   final String blood;
   final Color color;
-  BloodItem( this.id, this.blood, this.color,);
+  BloodItem(
+    this.id,
+    this.blood,
+    this.color,
+  );
   void selectBlood(BuildContext cTx) {
     Navigator.of(cTx).pushNamed(BloodItemScreen.routeName, arguments: id);
   }
@@ -18,9 +22,11 @@ class BloodItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(15),
       child: Container(
         padding: const EdgeInsets.all(15),
+        alignment: Alignment.center,
         child: Text(
           blood,
-          style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.black),
+          style: TextStyle(
+              color: Colors.white, fontSize: 24, fontWeight: FontWeight.w500),
         ),
         decoration: BoxDecoration(
           gradient: LinearGradient(

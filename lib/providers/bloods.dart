@@ -56,7 +56,7 @@ class Bloods with ChangeNotifier {
           "O-",
         ],
         donate: ["All Blood Types"],
-        color: Colors.yellow),
+        color: Colors.deepPurple),
     BloodEligibility(
         id: 'bid6',
         blood: 'A-',

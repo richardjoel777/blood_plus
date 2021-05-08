@@ -44,7 +44,6 @@ class MyApp extends StatelessWidget {
           title: 'Flutter Demo',
           theme: ThemeData(
               primarySwatch: Colors.red,
-              accentColor: Colors.yellowAccent,
               // canvasColor: Color.fromRGBO(255, 2254, 229, 1),
               fontFamily: 'Raleway',
               textTheme: ThemeData.light().textTheme.copyWith(

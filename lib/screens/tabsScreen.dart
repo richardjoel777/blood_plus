@@ -1,7 +1,5 @@
-
 import 'package:blood_plus/screens/chatScreen.dart';
 import 'package:flutter/material.dart';
-
 
 import '../screens/donateScreen.dart';
 import '../screens/requestScreen.dart';
@@ -52,16 +50,22 @@ class _TabsScreenState extends State<TabsScreen> {
       appBar: AppBar(
         title: Text(
           _pages[_selectedPageIndex]['title'],
-          style: Theme.of(context).textTheme.headline6,
+          style: TextStyle(
+              color: Colors.red, fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData().copyWith(
+          color: Colors.red,
+          opacity: 0.7,
         ),
       ),
       body: _pages[_selectedPageIndex]['page'],
       drawer: MainDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Colors.white,
         selectedItemColor: Theme.of(context).accentColor,
-        unselectedItemColor: Colors.white,
+        unselectedItemColor: Colors.grey,
         currentIndex: _selectedPageIndex,
         onTap: _selectPage,
         items: [
