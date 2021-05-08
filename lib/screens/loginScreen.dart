@@ -13,6 +13,7 @@ class LoginScreen extends StatelessWidget {
     TextEditingController password = TextEditingController();
     final _auth = Provider.of<AuthProvider>(context);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
         child: Column(
