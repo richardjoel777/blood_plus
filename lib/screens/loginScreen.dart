@@ -9,126 +9,120 @@ class LoginScreen extends StatelessWidget {
   static const String routeName = '/login';
   @override
   Widget build(BuildContext context) {
-  TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
+    TextEditingController email = TextEditingController();
+    TextEditingController password = TextEditingController();
     final _auth = Provider.of<AuthProvider>(context);
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 35.0,
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
+        child: Column(
+          children: [
+            Spacer(),
+            Expanded(
+              flex: 6,
+              child: Image(
+                image: AssetImage("assets/images/logo.png"),
+                fit: BoxFit.cover,
+              ),
+            ),
+            Spacer(),
+            Text(
+              "Login",
+              style: TextStyle(
+                  color: Colors.red.shade800,
+                  fontSize: 32,
+                  fontWeight: FontWeight.w700),
+              textAlign: TextAlign.center,
+            ),
+            Spacer(),
+            Container(
+              padding: EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  TextField(
+                    controller: email,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      labelText: "Email",
+                      labelStyle: TextStyle(
+                        fontSize: 16.0,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  TextField(
+                    obscureText: true,
+                    controller: password,
+                    decoration: InputDecoration(
+                      labelText: "Password",
+                      labelStyle: TextStyle(
+                        fontSize: 16.0,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Spacer(),
+            InkWell(
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.red,
                 ),
-                Image(
-                  image: AssetImage("assets/images/logo.png"),
-                  width: 290.0,
-                  height: 200.0,
-                  alignment: Alignment.center,
-                ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                Text(
+                child: Text(
                   "Login",
+                  textAlign: TextAlign.center,
                   style: Theme.of(context)
                       .textTheme
                       .headline6
-                      .copyWith(color: Colors.black, fontSize: 24),
-                  textAlign: TextAlign.center,
+                      .copyWith(fontSize: 24),
                 ),
-                Padding(
-                  padding: EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 1.0,
-                      ),
-                      TextField(
-                        controller: email,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                            labelText: "Email",
-                            labelStyle: TextStyle(
-                              fontSize: 14.0,
-                            ),
-                            hintStyle:
-                                TextStyle(color: Colors.grey, fontSize: 10.0)),
-                        style: TextStyle(fontSize: 14.0),
-                      ),
-                      SizedBox(
-                        height: 1.0,
-                      ),
-                      TextField(
-                        obscureText: true,
-                        controller: password,
-                        decoration: InputDecoration(
-                            labelText: "Password",
-                            labelStyle: TextStyle(
-                              fontSize: 14.0,
-                            ),
-                            hintStyle:
-                                TextStyle(color: Colors.grey, fontSize: 10.0)),
-                        style: TextStyle(fontSize: 14.0),
-                      ),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Theme.of(context).primaryColor,
-                          onPrimary: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(24.0),
-                          ),
-                        ),
-                        child: Container(
-                          height: 50.0,
-                          child: Center(
-                            child: Text(
-                              "Login",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline6
-                                  .copyWith(fontSize: 24),
-                            ),
-                          ),
-                        ),
-                        onPressed: () async {
-                          dynamic result = await _auth.signInEmail(
-                              email.text, password.text);
-                          if (result == null) {
-                            Fluttertoast.showToast(msg: "Something went wrong");
-                          } else {
-                            Fluttertoast.showToast(
-                                msg: "Logged in successfully");
-                            Navigator.of(context)
-                                .pushNamedAndRemoveUntil('/', (route) => false);
-                          }
-                        },
-                      )
-                    ],
+              ),
+              onTap: () async {
+                dynamic result =
+                    await _auth.signInEmail(email.text, password.text);
+                if (result == null) {
+                  Fluttertoast.showToast(msg: "Something went wrong");
+                } else {
+                  Fluttertoast.showToast(msg: "Logged in successfully");
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/', (route) => false);
+                }
+              },
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Don't have an account?",
+                  style: TextStyle(
+                    color: Colors.grey,
                   ),
                 ),
                 TextButton(
-                  style: TextButton.styleFrom(primary: Colors.black),
+                  child: Text(
+                    "Sign Up",
+                    style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500),
+                  ),
                   onPressed: () {
                     Navigator.of(context).pushNamedAndRemoveUntil(
                         RegisterScreen.routeName, (route) => false);
                   },
-                  child: Text(
-                    "Don't have an account? signup here!",
-                    style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "Raleway"),
-                  ),
-                )
+                ),
               ],
             ),
-          ),
-        ));
+            Spacer(flex: 2),
+          ],
+        ),
+      ),
+    );
   }
 }
