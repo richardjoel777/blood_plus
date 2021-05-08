@@ -18,7 +18,7 @@ class MainDrawer extends StatelessWidget {
         style: TextStyle(
           fontFamily: 'RobotoCondensed',
           fontSize: 24,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w500,
         ),
       ),
       onTap: tapHandler,
@@ -31,53 +31,72 @@ class MainDrawer extends StatelessWidget {
     return Drawer(
       child: Column(
         children: [
-          Container(
-            height: 120,
-            width: double.infinity,
-            padding: EdgeInsets.all(20),
-            alignment: Alignment.centerLeft,
-            color: Theme.of(context).primaryColor,
-            child: Text(
-              'Blood+',
-              style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w900,
-                  color: Colors.white),
+          Flexible(
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(20),
+              alignment: Alignment.bottomLeft,
+              color: Theme.of(context).primaryColor,
+              child: Text(
+                'Blood+',
+                style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white),
+              ),
             ),
           ),
           SizedBox(
-            height: 20,
+            height: 10,
           ),
-          buildListTile(
-            'Home',
-            Icons.home,
-            () {
-              Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
-            },
+          Expanded(
+            flex: 4,
+            child: Column(
+              children: [
+                buildListTile(
+                  'Home',
+                  Icons.home,
+                  () {
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil('/', (route) => false);
+                  },
+                ),
+                buildListTile(
+                  'My Profile',
+                  Icons.person,
+                  () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        ProfileScreen.routeName, (route) => false);
+                  },
+                ),
+                buildListTile(
+                  'Donation History',
+                  Icons.history,
+                  () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        DonationHistoryScreen.routeName, (route) => false);
+                  },
+                ),
+                buildListTile(
+                  'My Requests',
+                  Icons.request_page,
+                  () {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, MyRequestsScreen.routeName, (route) => false);
+                  },
+                ),
+                buildListTile(
+                  'Logout',
+                  Icons.logout,
+                  () {
+                    _auth.signOut();
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, LoginScreen.routeName, (route) => false);
+                  },
+                ),
+              ],
+            ),
           ),
-          buildListTile(
-            'My Profile',
-            Icons.person,
-            () {
-              Navigator.of(context).pushNamedAndRemoveUntil(ProfileScreen.routeName, (route) => false);
-            },
-          ),
-          buildListTile(
-            'Donation History',
-            Icons.history,
-            () {
-              Navigator.of(context).pushNamedAndRemoveUntil(DonationHistoryScreen.routeName, (route) => false);
-            },
-          ),
-          buildListTile('My Requests', Icons.request_page, () {
-            Navigator.pushNamedAndRemoveUntil(
-                context, MyRequestsScreen.routeName, (route) => false);
-          }),
-          buildListTile('Logout', Icons.logout, () {
-            _auth.signOut();
-            Navigator.pushNamedAndRemoveUntil(
-                context, LoginScreen.routeName, (route) => false);
-          })
         ],
       ),
     );
