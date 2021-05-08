@@ -5,64 +5,99 @@ import 'package:flutter/material.dart';
 
 class BloodItemScreen extends StatelessWidget {
   static const routeName = '/blood-details';
-  
+
   @override
   Widget build(BuildContext context) {
     final bId = ModalRoute.of(context).settings.arguments as String;
     final BloodEligibility _blood = DUMMY_BLOOD.firstWhere((b) => b.id == bId);
     return Scaffold(
-        appBar: AppBar(title: Text('${_blood.blood} Blood Group' , style: Theme.of(context).textTheme.headline6,)),
-        body: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-
+      appBar: AppBar(
+        title: Text(
+          '${_blood.blood} Blood Group',
+          style: TextStyle(
+              color: Colors.red, fontSize: 22, fontWeight: FontWeight.bold),
         ),
-        height: 620, 
-        padding: const EdgeInsets.all(15),
-        margin: EdgeInsets.all(15),
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData().copyWith(
+          color: Colors.red,
+          opacity: 0.7,
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            SizedBox(height: 5,),
-            Text("You Can Donate To", style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.black,),),
-            Container(
-              height: 250,
-              padding: EdgeInsets.only(right: 15),
-              child: ListView.builder(itemBuilder: (context, index){
-                return Column(
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              "You Can Donate To",
+              style: Theme.of(context).textTheme.headline6.copyWith(
+                    color: Colors.black,
+                  ),
+            ),
+            SizedBox(height: 10),
+            Flexible(
+              flex: 3,
+              child: ListView.builder(
+                itemBuilder: (context, index) {
+                  return Column(
                     children: [
                       ListTile(
                         leading: CircleAvatar(
                           child: Text('# ${index + 1}'),
                         ),
-                        title: Text(_blood.donate[index], style: Theme.of(context).textTheme.headline1.copyWith(color: Colors.black, fontSize: 15,)),
+                        title: Text(_blood.donate[index],
+                            style:
+                                Theme.of(context).textTheme.headline1.copyWith(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                    )),
                       ),
                       Divider(),
                     ],
                   );
-              },
-              itemCount: _blood.donate.length,),
+                },
+                itemCount: _blood.donate.length,
+              ),
             ),
-            SizedBox(height: 8,),
-            Text("You Can Get Donation From", style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.black,),),
-            Container(
-              height: 250,
-              padding: EdgeInsets.only(right: 15),
-              child: ListView.builder(itemBuilder: (context, index){
-                return Column(
-                    children: [
-                      ListTile(
-                        leading: CircleAvatar(
-                          child: Text('# ${index + 1}'),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "You Can Get Donation From",
+              style: Theme.of(context).textTheme.headline6.copyWith(
+                    color: Colors.black,
+                  ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Expanded(
+              flex: 3,
+              child: ListView.builder(
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        ListTile(
+                          leading: CircleAvatar(
+                            child: Text('# ${index + 1}'),
+                          ),
+                          title: Text(
+                            _blood.borrow[index],
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline1
+                                .copyWith(color: Colors.black, fontSize: 15),
+                          ),
                         ),
-                        title: Text(_blood.borrow[index], style: Theme.of(context).textTheme.headline1.copyWith(color: Colors.black, fontSize: 15),),
-                      ),
-                      Divider(),
-                    ],
-                  );
-              },
-              itemCount: _blood.borrow.length),
+                        Divider(),
+                      ],
+                    );
+                  },
+                  itemCount: _blood.borrow.length),
             ),
+            Spacer(flex: 4)
             // Text("You can Donate To"),
             // Markdown(data: donate),
             // Text("You can get Blood From"),
